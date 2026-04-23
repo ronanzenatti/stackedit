@@ -1,6 +1,4 @@
-import createLogger from 'vuex/dist/logger';
-import Vue from 'vue';
-import Vuex from 'vuex';
+import { createStore, createLogger } from 'vuex';
 import utils from '../services/utils';
 import content from './content';
 import contentState from './contentState';
@@ -23,11 +21,10 @@ import emptyPublishLocation from '../data/empties/emptyPublishLocation';
 import emptySyncLocation from '../data/empties/emptySyncLocation';
 import constants from '../data/constants';
 
-Vue.use(Vuex);
 
-const debug = NODE_ENV !== 'production';
+const debug = import.meta.env.MODE !== 'production';
 
-const store = new Vuex.Store({
+const store = createStore({
   modules: {
     content,
     contentState,

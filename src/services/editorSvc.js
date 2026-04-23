@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import EventEmitter from './eventEmitter';
 import DiffMatchPatch from 'diff-match-patch';
 import Prism from 'prismjs';
 import markdownItPandocRenderer from 'markdown-it-pandoc-renderer';
@@ -40,8 +40,8 @@ class SectionDesc {
   }
 }
 
-// Use a vue instance as an event bus
-const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils, {
+// Use a native EventEmitter as event bus (replaces Vue 2 event bus)
+const editorSvc = Object.assign(new EventEmitter(), editorSvcDiscussions, editorSvcUtils, {
   // Elements
   editorElt: null,
   previewElt: null,

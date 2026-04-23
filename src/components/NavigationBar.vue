@@ -17,9 +17,9 @@
         <icon-sync-off v-if="offline"></icon-sync-off>
       </div>
       <!-- Title -->
-      <div class="navigation-bar__title navigation-bar__title--fake text-input"></div>
+      <div class="navigation-bar__title navigation-bar__title--fake text-input" ref="titleFakeElt"></div>
       <div class="navigation-bar__title navigation-bar__title--text text-input" :style="{width: titleWidth + 'px'}">{{title}}</div>
-      <input class="navigation-bar__title navigation-bar__title--input text-input" :class="{'navigation-bar__title--focus': titleFocus, 'navigation-bar__title--scrolling': titleScrolling}" :style="{width: titleWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keydown.enter="submitTitle(false)" @keydown.esc.stop="submitTitle(true)" @mouseenter="titleHover = true" @mouseleave="titleHover = false" v-model="title">
+      <input class="navigation-bar__title navigation-bar__title--input text-input" ref="titleInputElt" :class="{'navigation-bar__title--focus': titleFocus, 'navigation-bar__title--scrolling': titleScrolling}" :style="{width: titleWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keydown.enter="submitTitle(false)" @keydown.esc.stop="submitTitle(true)" @mouseenter="titleHover = true" @mouseleave="titleHover = false" v-model="title">
       <!-- Sync/Publish -->
       <div class="flex flex--row" :class="{'navigation-bar__hidden': styles.hideLocations}">
         <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in syncLocations" :key="location.id" :href="location.url" target="_blank" v-title="'Synchronized location'"><icon-provider :provider-id="location.providerId"></icon-provider></a>
@@ -130,22 +130,22 @@ export default {
       if (!this.mounted) {
         return 0;
       }
-      this.titleFakeElt.textContent = this.title;
-      const width = this.titleFakeElt.getBoundingClientRect().width + 2; // 2px for the caret
+      this.$refs.titleFakeElt.textContent = this.title;
+      const width = this.$refs.titleFakeElt.getBoundingClientRect().width + 2; // 2px for the caret
       return Math.min(width, this.styles.titleMaxWidth);
     },
     titleScrolling() {
       const result = this.titleHover && !this.titleFocus;
-      if (this.titleInputElt) {
+      if (this.$refs.titleInputElt) {
         if (result) {
-          const scrollLeft = this.titleInputElt.scrollWidth - this.titleInputElt.offsetWidth;
-          animationSvc.animate(this.titleInputElt)
+          const scrollLeft = this.$refs.titleInputElt.scrollWidth - this.$refs.titleInputElt.offsetWidth;
+          animationSvc.animate(this.$refs.titleInputElt)
             .scrollLeft(scrollLeft)
             .duration(scrollLeft * 10)
             .easing('inOut')
             .start();
         } else {
-          animationSvc.animate(this.titleInputElt)
+          animationSvc.animate(this.$refs.titleInputElt)
             .scrollLeft(0)
             .start();
         }
@@ -199,7 +199,7 @@ export default {
     async editTitle(toggle) {
       this.titleFocus = toggle;
       if (toggle) {
-        this.titleInputElt.setSelectionRange(0, this.titleInputElt.value.length);
+        this.$refs.titleInputElt.setSelectionRange(0, this.$refs.titleInputElt.value.length);
       } else {
         const title = this.title.trim();
         this.title = store.getters['file/current'].name;
@@ -220,7 +220,7 @@ export default {
       if (reset) {
         this.title = '';
       }
-      this.titleInputElt.blur();
+      this.$refs.titleInputElt.blur();
     },
     close() {
       tempFileSvc.close();
@@ -237,8 +237,6 @@ export default {
     );
   },
   mounted() {
-    this.titleFakeElt = this.$el.querySelector('.navigation-bar__title--fake');
-    this.titleInputElt = this.$el.querySelector('.navigation-bar__title--input');
     this.mounted = true;
   },
 };

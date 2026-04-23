@@ -1,32 +1,20 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
 import 'babel-polyfill';
 import 'indexeddbshim/dist/indexeddbshim';
-import * as OfflinePluginRuntime from 'offline-plugin/runtime';
+
 import './extensions';
 import './services/optional';
-import './icons';
-import App from './components/App';
+import setupIcons from './icons';
+import App from './components/App.vue';
 import store from './store';
 import localDbSvc from './services/localDbSvc';
+import setupGlobals from './components/common/vueGlobals';
 
 if (!indexedDB) {
   throw new Error('Your browser is not supported. Please upgrade to the latest version.');
 }
 
-OfflinePluginRuntime.install({
-  onUpdateReady: () => {
-    // Tells to new SW to take control immediately
-    OfflinePluginRuntime.applyUpdate();
-  },
-  onUpdated: async () => {
-    if (!store.state.light) {
-      await localDbSvc.sync();
-      localStorage.updated = true;
-      // Reload the webpage to load into the new version
-      window.location.reload();
-    }
-  },
-});
+
 
 if (localStorage.updated) {
   store.dispatch('notification/info', 'StackEdit has just updated itself!');
@@ -49,11 +37,11 @@ if (!localStorage.installPrompted) {
   });
 }
 
-Vue.config.productionTip = false;
+// Vue.config.productionTip = false; // not needed in vue 3
 
 /* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  store,
-  render: h => h(App),
-});
+const app = createApp(App);
+setupGlobals(app);
+setupIcons(app);
+app.use(store);
+app.mount('#app');

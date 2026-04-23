@@ -130,7 +130,7 @@ export default {
     setTimeout(focus, 100);
     this.$watch(() => this.styles.showEditor, focus);
   },
-  destroyed() {
+  unmounted() {
     window.removeEventListener('resize', this.updateStyle);
     window.removeEventListener('keyup', this.saveSelection);
     window.removeEventListener('mouseup', this.saveSelection);

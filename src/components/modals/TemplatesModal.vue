@@ -28,8 +28,8 @@
       </div>
       <div class="form-entry">
         <label class="form-entry__label">Value</label>
-        <div class="form-entry__field" v-for="(template, id) in templates" :key="id" v-if="id === selectedId">
-          <code-editor lang="handlebars" :value="template.value" :disabled="isReadOnly" @changed="template.value = $event"></code-editor>
+        <div class="form-entry__field" v-if="templates[selectedId]" :key="selectedId">
+          <code-editor lang="handlebars" :value="templates[selectedId].value" :disabled="isReadOnly" @changed="templates[selectedId].value = $event"></code-editor>
         </div>
       </div>
       <div v-if="!isReadOnly">
@@ -37,8 +37,8 @@
         <div class="form-entry" v-else>
           <br>
           <label class="form-entry__label">Helpers</label>
-          <div class="form-entry__field" v-for="(template, id) in templates" :key="id" v-if="id === selectedId">
-            <code-editor lang="javascript" :value="template.helpers" @changed="template.helpers = $event"></code-editor>
+          <div class="form-entry__field" v-if="templates[selectedId]" :key="selectedId">
+            <code-editor lang="javascript" :value="templates[selectedId].helpers" @changed="templates[selectedId].helpers = $event"></code-editor>
           </div>
         </div>
       </div>
@@ -56,8 +56,8 @@ import utils from '../../services/utils';
 import badgeSvc from '../../services/badgeSvc';
 import ModalInner from './common/ModalInner';
 import CodeEditor from '../CodeEditor';
-import emptyTemplateValue from '../../data/empties/emptyTemplateValue.html';
-import emptyTemplateHelpers from '!raw-loader!../../data/empties/emptyTemplateHelpers.js'; // eslint-disable-line
+import emptyTemplateValue from '../../data/empties/emptyTemplateValue.html?raw';
+import emptyTemplateHelpers from '../../data/empties/emptyTemplateHelpers.js?raw'; // eslint-disable-line
 import store from '../../store';
 
 const collator = new Intl.Collator(undefined, { sensitivity: 'base' });

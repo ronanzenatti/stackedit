@@ -12,7 +12,7 @@ const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleApiKey = process.env.GOOGLE_API_KEY;
 const wordpressClientId = process.env.WORDPRESS_CLIENT_ID;
 
-exports.values = {
+export const values = {
   pandocPath,
   wkhtmltopdfPath,
   userBucketName,
@@ -27,7 +27,7 @@ exports.values = {
   wordpressClientId,
 };
 
-exports.publicValues = {
+export const publicValues = {
   dropboxAppKey,
   dropboxAppKeyFull,
   githubClientId,

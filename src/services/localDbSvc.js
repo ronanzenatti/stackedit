@@ -1,6 +1,6 @@
 import utils from './utils';
 import store from '../store';
-import welcomeFile from '../data/welcomeFile.md';
+import welcomeFile from '../data/welcomeFile.md?raw';
 import workspaceSvc from './workspaceSvc';
 import constants from '../data/constants';
 
@@ -240,7 +240,7 @@ const localDbSvc = {
           ...storeItem,
           tx: incrementedTx,
         };
-        dbStore.put(item);
+        dbStore.put(JSON.parse(JSON.stringify(item)));
         this.hashMap[item.type][item.id] = item.hash;
         this.lastTx = incrementedTx;
       }

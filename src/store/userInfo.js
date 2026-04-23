@@ -1,4 +1,4 @@
-import Vue from 'vue';
+
 
 export default {
   namespaced: true,
@@ -19,7 +19,7 @@ export default {
           itemToSet.imageUrl = existingItem.imageUrl;
         }
       }
-      Vue.set(itemsById, item.id, itemToSet);
+      itemsById[item.id] = itemToSet;
     },
   },
 };

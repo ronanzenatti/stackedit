@@ -21,7 +21,7 @@ import syncSvc from '../services/syncSvc';
 import networkSvc from '../services/networkSvc';
 import tempFileSvc from '../services/tempFileSvc';
 import store from '../store';
-import './common/vueGlobals';
+
 
 const themeClasses = {
   light: ['app--light'],

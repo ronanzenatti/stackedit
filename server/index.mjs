@@ -1,16 +1,21 @@
-const compression = require('compression');
-const serveStatic = require('serve-static');
-const bodyParser = require('body-parser');
-const path = require('path');
-const user = require('./user');
-const github = require('./github');
-const pdf = require('./pdf');
-const pandoc = require('./pandoc');
-const conf = require('./conf');
+import compression from 'compression';
+import serveStatic from 'serve-static';
+import bodyParser from 'body-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+import * as user from './user.mjs';
+import * as github from './github.mjs';
+import * as pdf from './pdf.mjs';
+import * as pandoc from './pandoc.mjs';
+import * as conf from './conf.mjs';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const resolvePath = pathToResolve => path.join(__dirname, '..', pathToResolve);
 
-module.exports = (app) => {
+export default (app) => {
   if (process.env.NODE_ENV === 'production') {
     // Enable CORS for fonts
     app.all('*', (req, res, next) => {

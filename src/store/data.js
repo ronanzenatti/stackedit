@@ -1,14 +1,13 @@
-import Vue from 'vue';
 import yaml from 'js-yaml';
 import utils from '../services/utils';
 import defaultWorkspaces from '../data/defaults/defaultWorkspaces';
-import defaultSettings from '../data/defaults/defaultSettings.yml';
+import defaultSettings from '../data/defaults/defaultSettings.yml?raw';
 import defaultLocalSettings from '../data/defaults/defaultLocalSettings';
 import defaultLayoutSettings from '../data/defaults/defaultLayoutSettings';
-import plainHtmlTemplate from '../data/templates/plainHtmlTemplate.html';
-import styledHtmlTemplate from '../data/templates/styledHtmlTemplate.html';
-import styledHtmlWithTocTemplate from '../data/templates/styledHtmlWithTocTemplate.html';
-import jekyllSiteTemplate from '../data/templates/jekyllSiteTemplate.html';
+import plainHtmlTemplate from '../data/templates/plainHtmlTemplate.html?raw';
+import styledHtmlTemplate from '../data/templates/styledHtmlTemplate.html?raw';
+import styledHtmlWithTocTemplate from '../data/templates/styledHtmlWithTocTemplate.html?raw';
+import jekyllSiteTemplate from '../data/templates/jekyllSiteTemplate.html?raw';
 import constants from '../data/constants';
 import features from '../data/features';
 import badgeSvc from '../services/badgeSvc';
@@ -133,11 +132,12 @@ export default {
       });
 
       // Store item in itemsById or lsItemsById if its stored in the localStorage
-      Vue.set(localStorageIdSet.has(item.id) ? lsItemsById : itemsById, item.id, item);
+      const target = localStorageIdSet.has(item.id) ? lsItemsById : itemsById;
+      target[item.id] = item;
     },
     deleteItem({ itemsById }, id) {
       // Only used by localDbSvc to clean itemsById from object moved to localStorage
-      Vue.delete(itemsById, id);
+      delete itemsById[id];
     },
   },
   getters: {
